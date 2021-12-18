@@ -18,16 +18,14 @@ uni_bar_chart <- dplyr::select(uni_bar_chart, Year, `GDP per capita growth (annu
 # Plot line chart 
 ggplot(uni_bar_chart, aes(x=Year, y=`GDP per capita growth (annual %)`)) + 
     geom_line(stat="identity", color="blue") +
-    labs(title = "GDP per capita growth (annual%) by year",
+    labs(title = "GDP per capita growth (annual%) by year in Hong Kong",
        x = "Year")+ 
     theme_minimal()
     
 #2. For univariate bar chart, select regions, year, and its GDP percapita growth
 ggplot(subset(df.gdp, ( Entity=="East Asia & Pacific" | Entity == "Africa Eastern and Southern" | Entity == "European Union" ) & Year == 2017), aes(x=Entity, y=`GDP per capita growth (annual %)`))+
   geom_bar(stat="identity", fill="steelblue", width=0.2)+
-  labs(title = "GDP per capita growth (annual%) in different regions in 2017",
-       x = "Region")+
-  geom_text(aes(label= (round(`GDP per capita growth (annual %)`,2))), vjust=-0.3, size=3)+
+  labs(title = "GDP per capita growth (annual%) in different regions in 2017",x = "Region")+
   scale_x_discrete(expand=c(0.1,0.1),limits=c("East Asia & Pacific", "Africa Eastern and Southern", "European Union")) + 
   scale_color_brewer(palette="Dark2")+
   theme(panel.grid.major = element_blank(), 
