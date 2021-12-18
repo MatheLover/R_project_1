@@ -19,18 +19,35 @@ uni_bar_chart <- dplyr::select(uni_bar_chart, Year, `GDP per capita growth (annu
 ggplot(uni_bar_chart, aes(x=Year, y=`GDP per capita growth (annual %)`)) + 
     geom_line(stat="identity", color="blue") +
     labs(title = "GDP per capita growth (annual%) by year",
-       x = "Year")
+       x = "Year")+ 
     theme_minimal()
     
-#2. For univariate bar chart, select regions, year, and its GDP percapita
-# Select Asia & Pacific, African Eastern and Southern, and Europe Union
-# uni_bar_chart_1 <- df.gdp %>%
- # filter(Entity=="East Asia & Pacific" | Entity == "Africa Eastern and Southern" | Entity == "European Union", Year == 2019) %>% 
-  # dplyr::select(uni_bar_chart_1, Year, `GDP per capita growth (annual %)`)
-
-
+#2. For univariate bar chart, select regions, year, and its GDP percapita growth
 ggplot(subset(df.gdp, ( Entity=="East Asia & Pacific" | Entity == "Africa Eastern and Southern" | Entity == "European Union" ) & Year == 2017), aes(x=Entity, y=`GDP per capita growth (annual %)`))+
-  geom_bar(stat="identity", color="blue", fill="white", width=0.2)+
-  scale_x_discrete(limits=c("East Asia & Pacific", "Africa Eastern and Southern", "European Union"))
+  geom_bar(stat="identity", fill="steelblue", width=0.2)+
+  labs(title = "GDP per capita growth (annual%) in different regions in 2017",
+       x = "Region")+
+  geom_text(aes(label= (round(`GDP per capita growth (annual %)`,2))), vjust=-0.3, size=3)+
+  scale_x_discrete(expand=c(0.1,0.1),limits=c("East Asia & Pacific", "Africa Eastern and Southern", "European Union")) + 
+  scale_color_brewer(palette="Dark2")+
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank())+
+  theme(panel.background = element_blank())+
+  theme_classic()
 
+#3. For multivariate bar chart, select several areas in different years and its GDP percapita growth
+uni_bar_chart_1 <- filter(df.gdp, (Entity=="Hong Kong" | Entity=="United States" | Entity=="United Kingdom" | Entity=="Japan") & (Year == 2017 | Year == 2018 | Year == 2019)  ) 
+ggplot(uni_bar_chart_1, aes(fill=Entity, y=`GDP per capita growth (annual %)`, x=Year, label=`GDP per capita growth (annual %)`))+
+  labs(title = "GDP per capita growth (annual%) in different areas from 2017 to 2019")+
+  geom_bar(position="dodge", stat="identity")+
+  geom_text(position = position_dodge(width= 0.9), vjust= -0.2, aes(label=round(`GDP per capita growth (annual %)`, 2)))+
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.ticks.x = element_blank())+
+  theme(panel.background = element_blank())+
+  scale_fill_brewer(palette = "Pastel1")
     
